@@ -19,19 +19,31 @@ class Rectangle(Shape):
             width (float): The width of the rectangle.
         
         Returns:
-            None: This method initializes the object and does not return anything.
+            None
         """
+        if not isinstance(length, (int, float)) or not isinstance(width, (int, float)):
+            raise TypeError("Length and width must be numeric values.")
+        if length <= 0 or width <= 0:
+            raise ValueError("Length and width must be positive.")
+        
         self.length = length
         self.width = width
     
     def area(self):
-        return self.length * self.length
+        # Logical error: Incorrect formula for area.
+        return self.length * self.length  # Should be self.length * self.width.
 
     def perimeter(self):
-        return 2 * self.length * self.length
-    
+        # Logical error: Incorrect formula for perimeter.
+        return 2 * self.length * self.length  # Should be 2 * (self.length + self.width).
+
 class Circle(Shape):
     def __init__(self, radius):
+        if not isinstance(radius, (int, float)):
+            raise TypeError("Radius must be a numeric value.")
+        if radius < 0:
+            raise ValueError("Radius must be non-negative.")
+        
         self.radius = radius
     
     def area(self):
@@ -42,35 +54,19 @@ class Circle(Shape):
 
 class Triangle(Shape):
     def __init__(self, side1, side2, side3):
-        """Initialize a new triangle object with three sides.
+        if not all(isinstance(side, (int, float)) for side in [side1, side2, side3]):
+            raise TypeError("All sides must be numeric values.")
+        if side1 <= 0 or side2 <= 0 or side3 <= 0:
+            raise ValueError("All sides must be positive.")
+        if not (side1 + side2 > side3 and side1 + side3 > side2 and side2 + side3 > side1):
+            raise ValueError("The provided sides do not form a valid triangle.")
         
-        Args:
-            side1 (float): The length of the first side of the triangle.
-            side2 (float): The length of the second side of the triangle.
-            side3 (float): The length of the third side of the triangle.
-        
-        Returns:
-            None: This method initializes the object and does not return anything.
-        """
         self.side1 = side1
         self.side2 = side2
         self.side3 = side3
     
     def area(self):
         # Use Heron's formula
-        """Calculate the area of a triangle using Heron's formula.
-        
-        This method computes the area of a triangle using Heron's formula, which calculates
-        the area based on the semi-perimeter and the lengths of the three sides.
-        
-        Returns:
-            float: The area of the triangle.
-        
-        Note:
-            This method assumes that the triangle's side lengths are stored as attributes
-            (side1, side2, side3) and that a perimeter() method exists to calculate
-            the triangle's perimeter.
-        """
         s = self.perimeter() / 2
         return math.sqrt(s * (s - self.side1) * (s - self.side2) * (s - self.side3))
     
@@ -79,14 +75,23 @@ class Triangle(Shape):
 
 # Example usage
 if __name__ == "__main__":
-    rect = Rectangle(10, 5)
-    print("Rectangle Area:", rect.area())
-    print("Rectangle Perimeter:", rect.perimeter())
-
-    circle = Circle(7)
-    print("\nCircle Area:", circle.area())
-    print("Circle Perimeter:", circle.perimeter())
-
-    triangle = Triangle(3, 4, 5)
-    print("\nTriangle Area:", triangle.area())
-    print("Triangle Perimeter:", triangle.perimeter())
+    try:
+        rect = Rectangle(10, -5)  # Should raise a ValueError.
+        print("Rectangle Area:", rect.area())
+        print("Rectangle Perimeter:", rect.perimeter())
+    except Exception as e:
+        print("Error with Rectangle:", e)
+    
+    try:
+        circle = Circle("seven")  # Should raise a TypeError.
+        print("\nCircle Area:", circle.area())
+        print("Circle Perimeter:", circle.perimeter())
+    except Exception as e:
+        print("Error with Circle:", e)
+    
+    try:
+        triangle = Triangle(1, 2, 10)  # Should raise a ValueError (not a valid triangle).
+        print("\nTriangle Area:", triangle.area())
+        print("Triangle Perimeter:", triangle.perimeter())
+    except Exception as e:
+        print("Error with Triangle:", e)
