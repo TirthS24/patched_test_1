@@ -55,7 +55,8 @@ class Triangle extends Shape {
 
     perimeter() {
         return this.side1 + this.side2 + this.side3;
-   
+    }
+}
 
 // Example usage
 const rect = new Rectangle(10, 5);
