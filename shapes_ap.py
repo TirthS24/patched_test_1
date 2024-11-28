@@ -1,22 +1,19 @@
 import math
 
 class Shape:
-    """Base class for different shapes."""
     def area(self):
-        """Compute the area of the shape."""
         raise NotImplementedError("This method should be overridden in subclasses.")
     
     def perimeter(self):
-        """Compute the perimeter of the shape."""
         raise NotImplementedError("This method should be overridden in subclasses.")
 
 class Rectangle(Shape):
     def __init__(self, length, width):
-        """Initialize a rectangle object.
+        """Initialize a new instance of Rectangle.
         
         Args:
-            length (float): The length of the rectangle.
-            width (float): The width of the rectangle.
+            length (int or float): The length of the rectangle. Must be positive numeric value.
+            width (int or float): The width of the rectangle. Must be positive numeric value.
         
         Returns:
             None
@@ -30,15 +27,38 @@ class Rectangle(Shape):
         self.width = width
     
     def area(self):
-        # Logical error: Incorrect formula for area.
+        """Calculate the area of a square. 
+        
+        Args:
+            self (Square): An instance of Square class.
+        
+        Returns:
+            int: The result of multiplication of length and width.
+        """
         return self.length * self.length  # Should be self.length * self.width.
 
     def perimeter(self):
-        # Logical error: Incorrect formula for perimeter.
+        """Calculates the perimeter of a square.
+        
+        Args:
+            self (Square): The Square object for which the perimeter is being calculated.
+        
+        Returns:
+            float: Returns twice the length of one side as this represents a square's perimeter.
+        """
         return 2 * self.length * self.length  # Should be 2 * (self.length + self.width).
 
 class Circle(Shape):
     def __init__(self, radius):
+        """Initializes a new instance of the Circle class with a given radius.
+        
+        Args:
+            radius (int or float): The radius of the circle. Must be non-negative and numeric.
+        
+        Raises:
+            TypeError: If radius is not a numeric value.
+            ValueError: If radius is negative.
+        """
         if not isinstance(radius, (int, float)):
             raise TypeError("Radius must be a numeric value.")
         if radius < 0:
@@ -47,6 +67,15 @@ class Circle(Shape):
         self.radius = radius
     
     def area(self):
+        """Calculates the area of a circle.
+    
+        Args:
+            self (Circle): The object calling this method.
+    
+        Returns:
+            float: The calculated area of the circle.
+        """
+        
         return math.pi * self.radius ** 2
     
     def perimeter(self):
@@ -54,6 +83,19 @@ class Circle(Shape):
 
 class Triangle(Shape):
     def __init__(self, side1, side2, side3):
+        """Initializes a Triangle object.
+    
+            Args:
+                side1 (int or float): The length of the first side of the triangle. 
+                side2 (int or float): The length of the second side of the triangle.
+                side3 (int or float): The length of the third side of the triangle.
+    
+            Raises:
+                TypeError: If any of the sides is not a number.
+                ValueError: 
+                    - If any of the sides is not positive, or if they do not form a valid triangle.
+        """
+        
         if not all(isinstance(side, (int, float)) for side in [side1, side2, side3]):
             raise TypeError("All sides must be numeric values.")
         if side1 <= 0 or side2 <= 0 or side3 <= 0:
